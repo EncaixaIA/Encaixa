@@ -98,10 +98,30 @@
 
   .final { text-align: left; display: grid; gap: 18px; justify-items: start; }
   .final h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 800; max-width: 16em; }
+  .pedido { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; width: 100%; }
+  .pedido-texto { display: grid; gap: 16px; }
+  .pedido-texto p { color: var(--suave); font-size: 1.1rem; max-width: 44ch; }
+  .formulario { background: var(--cartao); border: 1px solid var(--linha); border-radius: 24px; padding: 28px; display: grid; gap: 16px; }
+  .formulario label { display: grid; gap: 6px; font-weight: 600; }
+  .formulario input:not([type=radio]) { font: inherit; font-weight: 400; min-height: 48px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--linha); background: var(--fundo); color: var(--texto); }
+  .formulario input:focus-visible { outline: 3px solid var(--roxo); outline-offset: 1px; }
+  .planos-escolha { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .planos-escolha legend { font-weight: 600; margin-bottom: 6px; }
+  .opcao { display: flex !important; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--linha); font-weight: 500 !important; cursor: pointer; }
+  .opcao:has(input:checked) { border-color: var(--roxo); background: var(--balao); }
+  .opcao input { accent-color: var(--roxo); width: 18px; height: 18px; }
+  .formulario .botao { border: 0; cursor: pointer; font: inherit; font-weight: 700; justify-self: start; }
+  .formulario .botao:disabled { opacity: 0.6; cursor: wait; }
+  .aviso-dados { font-size: 0.88rem; color: var(--suave); }
+  .retorno:empty { display: none; }
+  .retorno { padding: 12px 14px; border-radius: 12px; background: var(--balao); font-weight: 600; }
+  .retorno.ok { background: var(--verde-claro); }
+  .escondido { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   footer { border-top: 1px solid var(--linha); padding-block: 28px 40px; font-size: 0.9rem; color: var(--suave); display: flex; flex-wrap: wrap; gap: 8px 20px; }
 
   @media (max-width: 860px) {
-    .heroi, .destaque, .planos, .recursos, .passos { grid-template-columns: minmax(0, 1fr); }
+    .heroi, .destaque, .planos, .recursos, .passos, .pedido { grid-template-columns: minmax(0, 1fr); }
+    .formulario { padding: 20px; }
     .heroi { padding-block: 24px 56px; gap: 40px; }
     .destaque { padding: 28px; }
     section { padding-block: 56px; }
@@ -126,7 +146,7 @@
         <h1>Cancelou? A Encaixa já encaixou outro cliente.</h1>
         <p class="sub">Uma secretária virtual que atende seus clientes no seu próprio WhatsApp: marca, confirma, remarca e preenche os horários vagos com quem está na lista de espera. De dia, de noite e durante as suas sessões.</p>
         <div class="acoes">
-          <a class="botao verde" href="mailto:luighy.projetos@gmail.com?subject=Quero%20testar%20a%20Encaixa">Quero testar grátis</a>
+          <a class="botao verde" href="#quero-testar" data-plano="solo">Quero testar grátis</a>
           <a class="botao contorno" href="#como-funciona">Ver como funciona</a>
         </div>
         <p class="nota">14 dias grátis. Você continua usando o seu número normalmente.</p>
@@ -202,13 +222,13 @@
         <span class="rotulo">Encaixa Solo</span>
         <span class="preco">R$ 129<small> por mês</small></span>
         <ul><li>Secretária no seu WhatsApp, 24 horas</li><li>Google Agenda, confirmações e lembretes</li><li>Lista de espera e encaixe automático</li><li>Painel e avisos no celular</li></ul>
-        <a class="botao verde" href="mailto:luighy.projetos@gmail.com?subject=Quero%20testar%20a%20Encaixa">Testar 14 dias grátis</a>
+        <a class="botao verde" href="#quero-testar" data-plano="solo">Testar 14 dias grátis</a>
       </div>
       <div class="plano">
         <span class="rotulo">Fundador</span>
         <span class="preco">R$ 79<small> por mês</small></span>
         <ul><li>Tudo do Solo</li><li>Preço garantido por 12 meses</li><li>Só para os 20 primeiros profissionais</li></ul>
-        <a class="botao contorno" href="mailto:luighy.projetos@gmail.com?subject=Quero%20ser%20fundador%20da%20Encaixa">Quero uma vaga</a>
+        <a class="botao contorno" href="#quero-testar" data-plano="fundador">Quero uma vaga</a>
       </div>
     </div>
     <p class="obs">As mensagens automáticas do WhatsApp (confirmações e lembretes) são cobradas pela Meta direto no seu cartão, normalmente entre R$ 10 e R$ 20 por mês. As respostas aos seus clientes não têm custo extra.</p>
@@ -227,10 +247,33 @@
     </div>
   </section>
 
-  <section class="largura final">
-    <h2>Sua agenda cheia, sem você no celular.</h2>
-    <a class="botao verde" href="mailto:luighy.projetos@gmail.com?subject=Quero%20testar%20a%20Encaixa">Quero testar grátis</a>
-    <p class="obs">Ou escreva para luighy.projetos@gmail.com</p>
+  <section id="quero-testar" class="largura final">
+    <div class="pedido">
+      <div class="pedido-texto">
+        <h2>Sua agenda cheia, sem você no celular.</h2>
+        <p>Deixe seu contato. Eu te chamo no WhatsApp para conectar a Encaixa e começar os seus 14 dias grátis.</p>
+      </div>
+      <form id="formulario" class="formulario" novalidate>
+        <label for="f-nome">Seu nome
+          <input id="f-nome" name="nome" autocomplete="name" required maxlength="80">
+        </label>
+        <label for="f-whatsapp">WhatsApp com DDD
+          <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(41) 99999-9999" required maxlength="30">
+        </label>
+        <label for="f-profissao">Profissão
+          <input id="f-profissao" name="profissao" placeholder="Ex.: massoterapeuta" maxlength="80">
+        </label>
+        <fieldset class="planos-escolha">
+          <legend>Plano</legend>
+          <label class="opcao"><input type="radio" name="plano" value="solo" checked> Solo, R$ 129/mês</label>
+          <label class="opcao"><input type="radio" name="plano" value="fundador"> Fundador, R$ 79/mês</label>
+        </fieldset>
+        <div class="escondido" aria-hidden="true"><label for="f-site">Não preencha<input id="f-site" name="site" tabindex="-1" autocomplete="off"></label></div>
+        <button class="botao verde" type="submit" id="f-enviar">Quero testar grátis</button>
+        <p class="aviso-dados">Uso seus dados só para falar com você sobre a Encaixa. Veja a <a href="privacidade.html">Política de Privacidade</a>.</p>
+        <p class="retorno" id="f-retorno" role="status" aria-live="polite"></p>
+      </form>
+    </div>
   </section>
 </main>
 
@@ -240,5 +283,55 @@
   <a href="termos.html">Termos de Uso</a>
 </footer>
 
+<script>
+  // Formulário "Quero testar": envia para a API da Encaixa, que guarda o pedido e avisa por e-mail.
+  (function () {
+    var form = document.getElementById("formulario");
+    var retorno = document.getElementById("f-retorno");
+    var botao = document.getElementById("f-enviar");
+    var EMAIL = "luighy.projetos@gmail.com";
+
+    document.querySelectorAll("a[data-plano]").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var opcao = form.querySelector('input[name="plano"][value="' + a.getAttribute("data-plano") + '"]');
+        if (opcao) opcao.checked = true;
+        setTimeout(function () { document.getElementById("f-nome").focus({ preventScroll: true }); }, 400);
+      });
+    });
+
+    function avisar(texto, ok) {
+      retorno.textContent = texto;
+      retorno.className = "retorno" + (ok ? " ok" : "");
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var dados = Object.fromEntries(new FormData(form).entries());
+      if (!dados.nome || dados.nome.trim().length < 2) { avisar("Escreva seu nome."); document.getElementById("f-nome").focus(); return; }
+      if ((dados.whatsapp || "").replace(/\D/g, "").length < 10) { avisar("Confira o WhatsApp com DDD."); document.getElementById("f-whatsapp").focus(); return; }
+      botao.disabled = true;
+      avisar("Enviando…");
+      fetch("https://app.encaixaia.com.br/api/interesse", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(dados)
+      })
+        .then(function (r) {
+          if (r.ok) {
+            form.querySelectorAll("input, button").forEach(function (el) { el.disabled = true; });
+            avisar("Recebido! Vou te chamar no WhatsApp " + dados.whatsapp + " em breve.", true);
+            return;
+          }
+          if (r.status === 429) throw new Error("Muitos envios seguidos. Tente de novo em alguns minutos ou escreva para " + EMAIL + ".");
+          return r.json().then(function (j) { throw new Error(j && j.mensagem ? j.mensagem : "Não deu para enviar."); });
+        })
+        .catch(function (erro) {
+          botao.disabled = false;
+          var texto = erro && erro.message && erro.message !== "Failed to fetch" ? erro.message : "Não deu para enviar agora.";
+          avisar(texto + " Se preferir, escreva para " + EMAIL + ".");
+        });
+    });
+  })();
+</script>
 </body>
 </html>
